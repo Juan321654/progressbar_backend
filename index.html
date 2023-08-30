@@ -1,0 +1,35 @@
+<!doctype html>
+<html>
+
+<head>
+     <title>Progress Bar</title>
+</head>
+
+<body>
+     <progress id="progressBar" max="100" value="0"></progress>
+     <script src="/socket.io/socket.io.js"></script>
+     <!-- When you set up a Socket.io server using Node.js and integrate it with your 
+     Express application, the Socket.io library automatically serves its client-side 
+     JavaScript at the /socket.io/socket.io.js path relative to the server root. -->
+
+     <!-- To clarify, this happens because the Socket.io library is designed to automatically 
+     host its client-side script for you, making it easy to get started without having 
+     to include the script manually in your project. When you set up your Socket.io server, 
+     it essentially also sets up a route that serves the client-side Socket.io library when 
+     requested from /socket.io/socket.io.js. -->
+     <script>
+          const socket = io();
+          const progressBar = document.getElementById('progressBar');
+
+          socket.on('progress', (data) => {
+               progressBar.value = data.count;
+          });
+
+          socket.on('done', () => {
+               console.log('Processing done');
+               socket.close();  // close the socket from client side
+          });
+     </script>
+</body>
+
+</html>
